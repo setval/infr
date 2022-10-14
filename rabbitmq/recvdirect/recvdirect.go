@@ -6,11 +6,6 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-type Setting struct {
-	Host         string
-	ExchangeName string
-}
-
 type Delivery struct {
 	d  <-chan amqp.Delivery
 	ch *amqp.Channel
@@ -79,4 +74,8 @@ func NewDelivery(host, exchange, key string) (*Delivery, error) {
 	}
 
 	return &Delivery{d: msgs, ch: ch}, nil
+}
+
+func (d *Delivery) Delivery() <-chan amqp.Delivery {
+	return d.d
 }
