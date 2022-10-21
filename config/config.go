@@ -9,11 +9,9 @@ import (
 )
 
 func New[T any]() (*T, error) {
-
 	if err := loadEnv(); err != nil {
 		return nil, err
 	}
-
 	return parseEnv[T]()
 }
 
