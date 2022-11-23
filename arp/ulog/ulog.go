@@ -26,13 +26,13 @@ type Settings struct {
 	Password string
 }
 
-func NewClient(settings Settings) (*Client, error) {
+func New(settings Settings) *Client {
 	return &Client{
 		settings: settings,
 		client: &http.Client{
 			Timeout: 10 * time.Second,
 		},
-	}, nil
+	}
 }
 
 type Parameters struct {
