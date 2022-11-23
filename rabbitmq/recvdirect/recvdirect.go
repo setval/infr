@@ -7,7 +7,7 @@ import (
 )
 
 type Delivery struct {
-	d  <-chan amqp.Delivery
+	d  *<-chan amqp.Delivery
 	ch *amqp.Channel
 }
 
@@ -73,9 +73,9 @@ func NewDelivery(host, exchange, key string) (*Delivery, error) {
 		return nil, fmt.Errorf("register a consumer: %w", err)
 	}
 
-	return &Delivery{d: msgs, ch: ch}, nil
+	return &Delivery{d: &msgs, ch: ch}, nil
 }
 
-func (d *Delivery) Delivery() <-chan amqp.Delivery {
+func (d *Delivery) Delivery() *<-chan amqp.Delivery {
 	return d.d
 }
