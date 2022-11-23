@@ -51,6 +51,11 @@ type Log struct {
 	Raw  string    `json:"raw"`
 }
 
+func (c *Client) SetAuth(login, password string) {
+	c.settings.Login = login
+	c.settings.Password = password
+}
+
 func (c *Client) DownloadRaw(parameters Parameters) (string, error) {
 	parameters.Format = FormatRaw
 	body, err := c.doRequest(parameters)
