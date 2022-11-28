@@ -4,16 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/setval/infr/rabbitmq/content"
+
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 type Delivery struct {
 	d amqp.Delivery
-}
-
-type Content struct {
-	Type string
-	Data interface{}
 }
 
 func RunDelivery(host, name string, chanEvent chan Delivery) error {
@@ -74,7 +71,7 @@ func (d *Delivery) Ack() {
 	d.d.Ack(false)
 }
 
-func (d *Delivery) Content() (Content, error) {
-	var c Content
+func (d *Delivery) Content() (content.Content, error) {
+	var c content.Content
 	return c, json.Unmarshal(d.d.Body, &c)
 }

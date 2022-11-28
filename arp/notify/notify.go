@@ -1,6 +1,9 @@
 package notify
 
-import "encoding/json"
+const (
+	NotifySourceDiscord = "discord"
+	NotifySourceVK      = "vk"
+)
 
 type Notify struct {
 	Source string
@@ -10,12 +13,4 @@ type Notify struct {
 type Data struct {
 	Recipient string
 	Text      string
-}
-
-func (n *Notify) MarshalJSON() ([]byte, error) {
-	return json.Marshal(n)
-}
-
-func (n *Notify) UnmarshalJSON(b []byte) error {
-	return json.Unmarshal(b, n)
 }
