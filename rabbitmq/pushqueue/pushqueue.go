@@ -20,13 +20,11 @@ func New(host, name string) (*PushQueue, error) {
 	if err != nil {
 		return nil, fmt.Errorf("connect to rabbitmq: %w", err)
 	}
-	defer conn.Close()
 
 	ch, err := conn.Channel()
 	if err != nil {
 		return nil, fmt.Errorf("open a channel %w", err)
 	}
-	defer ch.Close()
 
 	q, err := ch.QueueDeclare(
 		name,  // name
