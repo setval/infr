@@ -50,7 +50,7 @@ func (c *Client) loadGamePanel(parameters GamePanelParameters) (io.ReadCloser, e
 	params := c.createParams(parameters.Parameters)
 	params = c.addGamePanelParams(params, parameters)
 
-	body, err := c.doRequest(EngineUlog, params)
+	body, err := c.doRequest(EngineGamePanel, params)
 	if err != nil {
 		return nil, err
 	}
