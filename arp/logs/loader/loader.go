@@ -84,7 +84,7 @@ func (c *Client) DownloadRaw(parameters interface{}) (string, error) {
 	return c.downloadRaw(body)
 }
 
-func (c *Client) DownloadJSON(parameters UlogParameters) ([]Log, error) {
+func (c *Client) DownloadJSON(parameters interface{}) ([]Log, error) {
 	body, err := c.download(parameters)
 	if err != nil {
 		return nil, err
