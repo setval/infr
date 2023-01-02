@@ -38,9 +38,9 @@ func (c *Client) SetAuth(login, password string) {
 
 func (c *Client) createParams(parameters Parameters) map[string]interface{} {
 	return map[string]interface{}{
-		"token":     c.settings.Token,
-		"login":     c.settings.Login,
-		"password":  c.settings.Password,
+		"token":     parameters.Token,
+		"login":     parameters.Login,
+		"password":  parameters.Password,
 		"server_id": parameters.ServerID,
 		"date":      parameters.Date,
 		"type":      parameters.Type,
