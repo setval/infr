@@ -26,7 +26,7 @@ func New(settings Settings) *Client {
 	return &Client{
 		settings: settings,
 		client: &http.Client{
-			Timeout: 30 * time.Second,
+			Timeout: 60 * time.Second,
 		},
 	}
 }
