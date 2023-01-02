@@ -3,6 +3,7 @@ package loader
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io"
 )
 
@@ -15,6 +16,8 @@ const (
 	EngineUlog      = "ulog"
 	EngineGamePanel = "gamepanel"
 )
+
+var ErrUnknownEngine = errors.New("unknown engine")
 
 func (c *Client) downloadRaw(r io.ReadCloser) (string, error) {
 	buf := new(bytes.Buffer)
@@ -54,8 +57,26 @@ func (c *Client) loadGamePanel(parameters GamePanelParameters) (io.ReadCloser, e
 	return body, nil
 }
 
-func (c *Client) DownloadUlogRaw(parameters UlogParameters) (string, error) {
-	body, err := c.loadUlog(parameters)
+func (c *Client) download(parameters interface{}) (io.ReadCloser, error) {
+	var (
+		body io.ReadCloser
+		err  error
+	)
+
+	switch p := parameters.(type) {
+	case UlogParameters:
+		body, err = c.loadUlog(p)
+	case GamePanelParameters:
+		body, err = c.loadGamePanel(p)
+	default:
+		return nil, ErrUnknownEngine
+	}
+
+	return body, err
+}
+
+func (c *Client) DownloadRaw(parameters interface{}) (string, error) {
+	body, err := c.download(parameters)
 	if err != nil {
 		return "", err
 	}
@@ -63,26 +84,8 @@ func (c *Client) DownloadUlogRaw(parameters UlogParameters) (string, error) {
 	return c.downloadRaw(body)
 }
 
-func (c *Client) DownloadUlogJSON(parameters UlogParameters) ([]Log, error) {
-	body, err := c.loadUlog(parameters)
-	if err != nil {
-		return nil, err
-	}
-	defer body.Close()
-	return c.downloadJSON(body)
-}
-
-func (c *Client) DownloadGamePanelRaw(parameters GamePanelParameters) (string, error) {
-	body, err := c.loadGamePanel(parameters)
-	if err != nil {
-		return "", err
-	}
-	defer body.Close()
-	return c.downloadRaw(body)
-}
-
-func (c *Client) DownloadGamePanelJSON(parameters GamePanelParameters) ([]Log, error) {
-	body, err := c.loadGamePanel(parameters)
+func (c *Client) DownloadJSON(parameters UlogParameters) ([]Log, error) {
+	body, err := c.download(parameters)
 	if err != nil {
 		return nil, err
 	}
