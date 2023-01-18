@@ -27,12 +27,20 @@ func (c *Client) downloadRaw(r io.ReadCloser) (string, error) {
 	return buf.String(), nil
 }
 
-func (c *Client) downloadJSON(r io.ReadCloser) ([]Log, error) {
+func (c *Client) downloadLogJSON(r io.ReadCloser) ([]Log, error) {
 	var logs []Log
 	if err := json.NewDecoder(r).Decode(&logs); err != nil {
 		return nil, err
 	}
 	return logs, nil
+}
+
+func (c *Client) downloadUserJSON(r io.ReadCloser) ([]User, error) {
+	var users []User
+	if err := json.NewDecoder(r).Decode(&users); err != nil {
+		return nil, err
+	}
+	return users, nil
 }
 
 func (c *Client) loadUlog(parameters UlogParameters) (io.ReadCloser, error) {
@@ -84,11 +92,20 @@ func (c *Client) DownloadRaw(parameters interface{}) (string, error) {
 	return c.downloadRaw(body)
 }
 
-func (c *Client) DownloadJSON(parameters interface{}) ([]Log, error) {
+func (c *Client) DownloadLogJSON(parameters interface{}) ([]Log, error) {
 	body, err := c.download(parameters)
 	if err != nil {
 		return nil, err
 	}
 	defer body.Close()
-	return c.downloadJSON(body)
+	return c.downloadLogJSON(body)
+}
+
+func (c *Client) DownloadUserJSON(parameters interface{}) ([]User, error) {
+	body, err := c.download(parameters)
+	if err != nil {
+		return nil, err
+	}
+	defer body.Close()
+	return c.downloadUserJSON(body)
 }
