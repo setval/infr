@@ -46,6 +46,7 @@ func (c *Client) createParams(parameters Parameters) map[string]interface{} {
 		"type":      parameters.Type,
 		"format":    parameters.Format,
 		"listen":    parameters.Listen,
+		"full":      parameters.Full,
 	}
 }
 
@@ -53,6 +54,7 @@ func (c *Client) addUlogParams(parameters map[string]interface{}, ulogParameters
 	parameters["user_id"] = ulogParameters.UserID
 	parameters["is_vc"] = ulogParameters.IsVC
 	parameters["is_admin"] = ulogParameters.IsAdmin
+	parameters["text"] = ulogParameters.Text
 	return parameters
 }
 
