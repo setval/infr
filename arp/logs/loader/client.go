@@ -38,9 +38,9 @@ func (c *Client) SetAuth(login, password string) {
 
 func (c *Client) createParams(parameters Parameters) map[string]interface{} {
 	return map[string]interface{}{
-		"token":     parameters.Token,
-		"login":     parameters.Login,
-		"password":  parameters.Password,
+		"token":     c.settings.Token,
+		"login":     c.settings.Login,
+		"password":  c.settings.Password,
 		"server_id": parameters.ServerID,
 		"date":      parameters.Date,
 		"type":      parameters.Type,
@@ -59,7 +59,7 @@ func (c *Client) addUlogParams(parameters map[string]interface{}, ulogParameters
 }
 
 func (c *Client) addGamePanelParams(parameters map[string]interface{}, gamePanelParameters GamePanelParameters) map[string]interface{} {
-	parameters["secret"] = gamePanelParameters.Secret
+	parameters["secret"] = c.settings.Secret
 	parameters["nickname"] = gamePanelParameters.Nickname
 	return parameters
 }
