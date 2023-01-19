@@ -25,6 +25,7 @@ type UlogParameters struct {
 
 type GamePanelParameters struct {
 	Parameters
+	Host     string `json:"host"`
 	Secret   string `json:"secret"`
 	Nickname string `json:"nickname"`
 }

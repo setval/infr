@@ -3,9 +3,20 @@ package loader
 import "time"
 
 type Log struct {
-	Date time.Time `json:"date"`
-	Text string    `json:"text"`
-	Raw  string    `json:"raw"`
+	Date   time.Time `json:"date"`
+	Text   string    `json:"text"`
+	Raw    string    `json:"raw"`
+	Sender BaseUser  `json:"sender"`
+	Target BaseUser  `json:"target"`
+}
+
+type BaseUser struct {
+	IP *IP `json:"ip"`
+}
+
+type IP struct {
+	Reg  string `json:"reg"`
+	Last string `json:"last"`
 }
 
 type User struct {

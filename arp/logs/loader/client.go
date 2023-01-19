@@ -59,6 +59,7 @@ func (c *Client) addUlogParams(parameters map[string]interface{}, ulogParameters
 }
 
 func (c *Client) addGamePanelParams(parameters map[string]interface{}, gamePanelParameters GamePanelParameters) map[string]interface{} {
+	parameters["host"] = gamePanelParameters.Host
 	parameters["secret"] = c.settings.Secret
 	parameters["nickname"] = gamePanelParameters.Nickname
 	return parameters
