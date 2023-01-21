@@ -62,6 +62,7 @@ func (c *Client) addGamePanelParams(parameters map[string]interface{}, gamePanel
 	parameters["host"] = gamePanelParameters.Host
 	parameters["secret"] = c.settings.Secret
 	parameters["nickname"] = gamePanelParameters.Nickname
+	parameters["params"] = gamePanelParameters.Params
 	return parameters
 }
 
