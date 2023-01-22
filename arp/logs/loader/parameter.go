@@ -28,5 +28,6 @@ type GamePanelParameters struct {
 	Host     string   `json:"host"`
 	Secret   string   `json:"secret"`
 	Nickname string   `json:"nickname"`
+	Reason   string   `json:"reason"`
 	Params   []string `json:"params"`
 }
