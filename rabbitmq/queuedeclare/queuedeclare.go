@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/setval/infr/rabbitmq"
 	"github.com/setval/infr/rabbitmq/content"
 
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -13,12 +14,15 @@ type Delivery struct {
 	d amqp.Delivery
 }
 
-func RunDelivery(host, name string, chanEvent chan Delivery) error {
+func RunDelivery(host, name string, chanEvent chan Delivery, errCh chan error) error {
 	conn, err := amqp.Dial(host)
 	if err != nil {
 		return fmt.Errorf("connect to rabbitmq: %w", err)
 	}
 	defer conn.Close()
+
+	notify := conn.NotifyClose(make(chan *amqp.Error))
+	block := conn.NotifyBlocked(make(chan amqp.Blocking))
 
 	ch, err := conn.Channel()
 	if err != nil {
@@ -60,11 +64,16 @@ func RunDelivery(host, name string, chanEvent chan Delivery) error {
 		return fmt.Errorf("register a consumer: %w", err)
 	}
 
-	for d := range msgs {
-		chanEvent <- Delivery{d}
+	for {
+		select {
+		case err = <-notify:
+			errCh <- rabbitmq.ErrCloseConnecton
+		case <-block:
+			errCh <- rabbitmq.ErrBlockConnection
+		case d := <-msgs:
+			chanEvent <- Delivery{d}
+		}
 	}
-
-	return nil
 }
 
 func (d *Delivery) Ack() {
